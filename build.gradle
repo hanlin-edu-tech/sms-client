@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
+    }
+}
+
+apply plugin: "java"
+apply plugin: "maven-publish"
+apply plugin: "com.jfrog.bintray"
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+group = "com.eHanlin.api"
+version = "2.0.0"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.apache.httpcomponents:httpclient:4.2.3"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+bintray {
+    user = bintray_user
+    key = bintray_api_key
+
+    publications = ["mavenJava"]
+    publish = true
+    pkg {
+        repo = "maven"
+        name = "sms-client"
+        userOrg = "ehanlin"
+        desc = "eHanlin sms client"
+        vcsUrl = "https://github.com/eHanlin/sms-client"
+        licenses = ["Apache-2.0"]
+        publicDownloadNumbers = true
+    }
+}
+
