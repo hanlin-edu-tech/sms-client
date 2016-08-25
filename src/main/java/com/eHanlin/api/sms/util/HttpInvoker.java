@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class HttpInvoker {
 
-    private static final String RESPONSE_LINE_SPLITTER = "\n";
+    private static final String RESPONSE_LINE_SPLITTER = "\\r\\n|\\r|\\n";
 
     private static final String RESPONSE_TOKEN_SPLITTER = "=";
 
