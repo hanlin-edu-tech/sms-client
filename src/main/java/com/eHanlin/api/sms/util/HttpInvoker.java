@@ -1,8 +1,11 @@
 package com.eHanlin.api.sms.util;
 
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 
 import java.util.HashMap;
@@ -17,17 +20,23 @@ public class HttpInvoker {
 
     private static final String RESPONSE_TOKEN_SPLITTER = "=";
 
-    private HttpClient httpClient;
+    private CloseableHttpClient httpClient;
 
     public HttpInvoker() {
-        httpClient = new DefaultHttpClient();
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+        connectionManager.setDefaultMaxPerRoute(20);
+        httpClient = HttpClients.custom()
+                .setConnectionManager(connectionManager)
+                .build();
     }
 
     public Map get(String api) {
         Map<String, String> result;
         HttpGet request = new HttpGet(api);
+        HttpClientContext context = HttpClientContext.create();
         try {
-            String responseString = EntityUtils.toString(httpClient.execute(request).getEntity());
+            CloseableHttpResponse resp = httpClient.execute(request, context);
+            String responseString = EntityUtils.toString(resp.getEntity());
             result = responseStringToMap(responseString);
 
         } catch (Exception e) {
