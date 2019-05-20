@@ -1,11 +1,5 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
-    }
+plugins {
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 apply plugin: "java"
@@ -45,7 +39,7 @@ bintray {
         name = "sms-client"
         userOrg = "ehanlin"
         desc = "eHanlin sms client"
-        vcsUrl = "https://github.com/eHanlin/sms-client"
+        vcsUrl = "https://github.com/hanlin-edu-tech/sms-client"
         licenses = ["Apache-2.0"]
         publicDownloadNumbers = true
     }
