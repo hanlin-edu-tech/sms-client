@@ -34,8 +34,7 @@ public class HttpInvoker {
         Map<String, String> result;
         HttpGet request = new HttpGet(api);
         HttpClientContext context = HttpClientContext.create();
-        try {
-            CloseableHttpResponse resp = httpClient.execute(request, context);
+        try (CloseableHttpResponse resp = httpClient.execute(request, context)) {
             String responseString = EntityUtils.toString(resp.getEntity());
             result = responseStringToMap(responseString);
 
